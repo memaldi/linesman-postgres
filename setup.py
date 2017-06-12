@@ -1,0 +1,46 @@
+try:
+    from setuptools import setup, find_packages
+except ImportError:
+    from ez_setup import use_setuptools
+    use_setuptools()
+    from setuptools import setup, find_packages
+
+import sys
+
+install_requires = ["psycopg2"]
+
+# ordereddict is required for versions < 2.7; its included in collections in
+# versions 2.7+ and 3.0+
+if sys.version_info < (2, 7):
+    install_requires.append("ordereddict")
+
+setup(
+    name='linesman-postgres',
+    version='0.1',
+    description='PostgreSQL backend for Linesman WSGI Profiling middleware',
+    # long_description=open("README.rst", "r").read(),
+    author='Mikel Emaldi',
+    author_email='m.emaldi@deusto.es',
+    #  url='http://pypi.python.org/pypi/linesman',
+    test_suite='nose.collector',
+    tests_require=['nose', 'mock==0.7', 'webtest'],
+    zip_safe=False,
+    packages=find_packages(exclude=["ez_setup", "linesman-postgres.tests",
+                                    "linesman-postgres.tests.*"]),
+    # package_data={
+    #     'linesman': ['templates/*', 'media/css/*', 'media/js/*', 'media/images/*'],
+    # },
+    install_requires=install_requires,
+    classifiers=[
+        "Development Status :: 1 - Beta",
+        "Intended Audience :: Developers",
+        "Programming Language :: Python",
+        "Topic :: Internet :: WWW/HTTP :: WSGI :: Middleware",
+    ],
+    # entry_points="""
+    #     [paste.filter_app_factory]
+    #     profiler = linesman.middleware:profiler_filter_app_factory
+    #     [paste.filter_factory]
+    #     profiler = linesman.middleware:profiler_filter_factory
+    # """
+)
